@@ -1,0 +1,974 @@
+{
+  "info": {
+    "name": "SpecSync - Software Requirement Drift Detection System",
+    "description": "Thunder Client Collection for SpecSync Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "projectId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "requirementId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "featureId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "testCaseId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 AUTHENTICATION",
+      "item": [
+        {
+          "name": "1. Signup - Create New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Developer\",\n  \"email\": \"john.dev@specsync.com\",\n  \"password\": \"SecurePassword123!\",\n  \"role\": \"Developer\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/signup",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            },
+            "description": "Create a new user account. Available roles: Admin, BusinessAnalyst, Developer, QA, Viewer"
+          },
+          "response": []
+        },
+        {
+          "name": "2. Login - Get JWT Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john.dev@specsync.com\",\n  \"password\": \"SecurePassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Login to get JWT token. Save the token in the 'token' variable for subsequent requests."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Get current logged-in user information"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 PROJECTS",
+      "item": [
+        {
+          "name": "1. Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"Enterprise Booking System v2.0\",\n  \"description\": \"Development of next-generation booking system with advanced features\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects"
+              ]
+            },
+            "description": "Create a new project. Save the returned projectId in the 'projectId' variable for subsequent requests."
+          },
+          "response": []
+        },
+        {
+          "name": "2. List Projects",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/projects?page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all projects for current user with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Project Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/projects/{{projectId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific project"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Update Project",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectName\": \"Enterprise Booking System v2.1\",\n  \"description\": \"Updated development of next-generation booking system\",\n  \"status\": \"Active\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/projects/{{projectId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "projects",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Update project details"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📋 REQUIREMENTS",
+      "item": [
+        {
+          "name": "1. Create Requirement",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"reqId\": \"REQ-001\",\n  \"title\": \"User Authentication System\",\n  \"description\": \"Implement JWT-based authentication with secure password hashing and token refresh mechanism\",\n  \"priority\": \"High\",\n  \"acceptanceCriteria\": [\n    \"Login page created with email and password fields\",\n    \"JWT tokens generated on successful login\",\n    \"Protected routes implemented\",\n    \"Token refresh mechanism working\",\n    \"Logout functionality implemented\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requirements",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "requirements"
+              ]
+            },
+            "description": "Create a new requirement (v1). Save the returned requirementId in the 'requirementId' variable."
+          },
+          "response": []
+        },
+        {
+          "name": "2. List Requirements",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/requirements?projectId={{projectId}}&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "requirements"
+              ],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all requirements for a project with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "3. Get Requirement Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/requirements/{{requirementId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "requirements",
+                "{{requirementId}}"
+              ]
+            },
+            "description": "Get detailed information and version history of a requirement"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Update Requirement (Creates New Version)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"User Authentication System with Multi-Factor\",\n  \"description\": \"Implement JWT-based authentication with secure password hashing, token refresh mechanism, and optional 2FA\",\n  \"priority\": \"Critical\",\n  \"acceptanceCriteria\": [\n    \"Login page created with email and password fields\",\n    \"JWT tokens generated on successful login\",\n    \"Protected routes implemented\",\n    \"Token refresh mechanism working\",\n    \"Logout functionality implemented\",\n    \"Optional 2FA implementation\",\n    \"3 failed login attempts block account for 30 mins\"\n  ],\n  \"changeLog\": \"Added 2FA support and security enhancements based on security audit\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/requirements/{{requirementId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "requirements",
+                "{{requirementId}}"
+              ]
+            },
+            "description": "Update requirement - automatically creates a new version (v2) while keeping v1. The currentVersion field is incremented."
+          },
+          "response": []
+        },
+        {
+          "name": "5. Get Requirement Version History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/requirements/{{requirementId}}/versions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "requirements",
+                "{{requirementId}}",
+                "versions"
+              ]
+            },
+            "description": "Get complete version history of a requirement, sorted by version number (newest first)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "⚙️ FEATURES",
+      "item": [
+        {
+          "name": "1. Create Feature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"featureName\": \"Login Module\",\n  \"description\": \"Complete login feature implementation including form validation, API integration, and token management\",\n  \"requirementId\": \"{{requirementId}}\",\n  \"implementedVersion\": 1,\n  \"status\": \"In Development\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/features",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "features"
+              ]
+            },
+            "description": "Create a new feature linked to a requirement. Save the returned featureId in the 'featureId' variable."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Create Orphan Feature (No Requirement)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"featureName\": \"Analytics Dashboard\",\n  \"description\": \"Real-time analytics dashboard (no requirement linked - will be detected as drift)\",\n  \"requirementId\": null,\n  \"implementedVersion\": null,\n  \"status\": \"In Development\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/features",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "features"
+              ]
+            },
+            "description": "Create an orphan feature (not linked to any requirement). This will be detected as 'Orphan Feature' drift."
+          },
+          "response": []
+        },
+        {
+          "name": "3. List Features",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/features?projectId={{projectId}}&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "features"
+              ],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all features for a project with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get Feature Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/features/{{featureId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "features",
+                "{{featureId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific feature"
+          },
+          "response": []
+        },
+        {
+          "name": "5. Update Feature",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"featureName\": \"Login Module v2\",\n  \"status\": \"Testing\",\n  \"implementedVersion\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/features/{{featureId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "features",
+                "{{featureId}}"
+              ]
+            },
+            "description": "Update feature details including version and status"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🧪 TEST CASES",
+      "item": [
+        {
+          "name": "1. Create Test Case",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"testCaseId\": \"TC-001\",\n  \"title\": \"Login with valid credentials\",\n  \"description\": \"Verify that user can successfully login with correct email and password\",\n  \"featureId\": \"{{featureId}}\",\n  \"requirementId\": \"{{requirementId}}\",\n  \"steps\": [\n    {\n      \"step\": 1,\n      \"description\": \"Navigate to login page\",\n      \"expectedResult\": \"Login form is displayed with email and password fields\"\n    },\n    {\n      \"step\": 2,\n      \"description\": \"Enter valid email address and password\",\n      \"expectedResult\": \"Form accepts input without errors\"\n    },\n    {\n      \"step\": 3,\n      \"description\": \"Click login button\",\n      \"expectedResult\": \"User is redirected to dashboard\"\n    },\n    {\n      \"step\": 4,\n      \"description\": \"Verify JWT token is stored\",\n      \"expectedResult\": \"Token present in localStorage/sessionStorage\"\n    }\n  ],\n  \"priority\": \"High\",\n  \"status\": \"Ready\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/testcases",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "testcases"
+              ]
+            },
+            "description": "Create a new test case for a feature. Save the returned testCaseId in the 'testCaseId' variable."
+          },
+          "response": []
+        },
+        {
+          "name": "2. Create Additional Test Cases",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"projectId\": \"{{projectId}}\",\n  \"testCaseId\": \"TC-002\",\n  \"title\": \"Login with invalid credentials\",\n  \"description\": \"Verify that login fails with incorrect password\",\n  \"featureId\": \"{{featureId}}\",\n  \"requirementId\": \"{{requirementId}}\",\n  \"steps\": [\n    {\n      \"step\": 1,\n      \"description\": \"Navigate to login page\",\n      \"expectedResult\": \"Login form is displayed\"\n    },\n    {\n      \"step\": 2,\n      \"description\": \"Enter valid email but incorrect password\",\n      \"expectedResult\": \"Form accepts input\"\n    },\n    {\n      \"step\": 3,\n      \"description\": \"Click login button\",\n      \"expectedResult\": \"Error message displayed: 'Invalid credentials'\"\n    }\n  ],\n  \"priority\": \"High\",\n  \"status\": \"Ready\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/testcases",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "testcases"
+              ]
+            },
+            "description": "Create additional test case"
+          },
+          "response": []
+        },
+        {
+          "name": "3. List Test Cases",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/testcases?projectId={{projectId}}&featureId={{featureId}}&page=1&limit=10",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "testcases"
+              ],
+              "query": [
+                {
+                  "key": "projectId",
+                  "value": "{{projectId}}"
+                },
+                {
+                  "key": "featureId",
+                  "value": "{{featureId}}"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Get all test cases for a project/feature with pagination"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Get Test Case Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/testcases/{{testCaseId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "testcases",
+                "{{testCaseId}}"
+              ]
+            },
+            "description": "Get detailed information about a specific test case"
+          },
+          "response": []
+        },
+        {
+          "name": "5. Update Test Case",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Passed\",\n  \"lastExecuted\": \"2024-03-05T15:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/testcases/{{testCaseId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "testcases",
+                "{{testCaseId}}"
+              ]
+            },
+            "description": "Update test case status and execution details"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔍 DRIFT DETECTION",
+      "item": [
+        {
+          "name": "1. Detect All Drift Issues",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Run complete drift analysis on project. Returns:\n- All drift issues found by 5 algorithms\n- Drift score (cumulative severity weighted score)\n- Risk level (Stable/Moderate/High Risk)\n- Issue breakdown by type and severity\n\nAlgorithms:\n1. Version Mismatch: Feature implements older requirement version\n2. Orphan Feature: Feature not linked to any requirement\n3. Implementation Gap: Requirement not implemented by any feature\n4. Testing Gap: Feature with no test cases\n5. Critical Risk: High/Critical priority requirement not implemented"
+          },
+          "response": []
+        },
+        {
+          "name": "2. Detect Version Mismatch Drift",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}/Version Mismatch",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}",
+                "Version Mismatch"
+              ]
+            },
+            "description": "Get drift issues of type 'Version Mismatch' - feature implements older requirement version"
+          },
+          "response": []
+        },
+        {
+          "name": "3. Detect Orphan Features",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}/Orphan Feature",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}",
+                "Orphan Feature"
+              ]
+            },
+            "description": "Get drift issues of type 'Orphan Feature' - features not linked to any requirement"
+          },
+          "response": []
+        },
+        {
+          "name": "4. Detect Implementation Gaps",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}/Implementation Gap",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}",
+                "Implementation Gap"
+              ]
+            },
+            "description": "Get drift issues of type 'Implementation Gap' - requirements not implemented by any feature"
+          },
+          "response": []
+        },
+        {
+          "name": "5. Detect Testing Gaps",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}/Testing Gap",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}",
+                "Testing Gap"
+              ]
+            },
+            "description": "Get drift issues of type 'Testing Gap' - features with no test cases"
+          },
+          "response": []
+        },
+        {
+          "name": "6. Detect Critical Risks",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/drift/{{projectId}}/Critical Risk",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "drift",
+                "{{projectId}}",
+                "Critical Risk"
+              ]
+            },
+            "description": "Get drift issues of type 'Critical Risk' - high/critical priority requirements not implemented"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 ANALYTICS",
+      "item": [
+        {
+          "name": "Get Project Analytics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/analytics/{{projectId}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "analytics",
+                "{{projectId}}"
+              ]
+            },
+            "description": "Get comprehensive project analytics including:\n\nRequirement Metrics:\n- Total requirements\n- Volatility rate (avg versions per requirement)\n- Status distribution (Draft, In Review, Approved, Deprecated)\n- Priority distribution (Low, Medium, High, Critical)\n- Most modified requirements\n\nFeature Metrics:\n- Total features\n- Completion ratio (% of completed/released)\n- Completed count\n- Status distribution\n\nTesting Metrics:\n- Total test cases\n- Test coverage (% of features with tests)\n- Features with test count\n\nDrift Metrics:\n- Total drift issues\n- Drift score\n- Risk level\n- Issue counts by severity\n- Breakdown by drift type"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🏥 HEALTH CHECK",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/health",
+              "host": [
+                "http://localhost:5000"
+              ],
+              "path": [
+                "health"
+              ]
+            },
+            "description": "Verify that the SpecSync backend API is running and responding"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
