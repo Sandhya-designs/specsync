@@ -4,7 +4,7 @@
  */
 
 import User from '../models/User.js';
-import { sendSuccessResponse, sendErrorResponse } from '../utils/responseHandler.js';
+import { sendResponse, sendErrorResponse } from '../utils/responseHandler.js';
 
 /**
  * List all users
@@ -37,7 +37,7 @@ export const listUsers = async (req, res) => {
 
     const users = await User.find(filter).select('-password').sort({ createdAt: -1 });
 
-    return sendSuccessResponse(res, 200, { users }, 'Users retrieved successfully');
+    return sendResponse(res, 200, { users }, 'Users retrieved successfully');
   } catch (error) {
     console.error('List users error:', error);
     return sendErrorResponse(res, 500, 'Failed to retrieve users');
@@ -59,7 +59,7 @@ export const getUserById = async (req, res) => {
       return sendErrorResponse(res, 404, 'User not found');
     }
 
-    return sendSuccessResponse(res, 200, { user }, 'User retrieved successfully');
+    return sendResponse(res, 200, { user }, 'User retrieved successfully');
   } catch (error) {
     console.error('Get user error:', error);
     return sendErrorResponse(res, 500, 'Failed to retrieve user');
@@ -108,7 +108,7 @@ export const createUser = async (req, res) => {
       createdAt: newUser.createdAt,
     };
 
-    return sendSuccessResponse(res, 201, { user: userResponse }, 'User created successfully');
+    return sendResponse(res, 201, { user: userResponse }, 'User created successfully');
   } catch (error) {
     console.error('Create user error:', error);
     return sendErrorResponse(res, 500, 'Failed to create user');
@@ -149,7 +149,7 @@ export const updateUser = async (req, res) => {
       updatedAt: user.updatedAt,
     };
 
-    return sendSuccessResponse(res, 200, { user: userResponse }, 'User updated successfully');
+    return sendResponse(res, 200, { user: userResponse }, 'User updated successfully');
   } catch (error) {
     console.error('Update user error:', error);
     return sendErrorResponse(res, 500, 'Failed to update user');
@@ -180,7 +180,7 @@ export const deleteUser = async (req, res) => {
 
     await User.findByIdAndDelete(userId);
 
-    return sendSuccessResponse(res, 200, {}, 'User deleted successfully');
+    return sendResponse(res, 200, {}, 'User deleted successfully');
   } catch (error) {
     console.error('Delete user error:', error);
     return sendErrorResponse(res, 500, 'Failed to delete user');
@@ -208,7 +208,7 @@ export const getUserStats = async (req, res) => {
       usersByRole,
     };
 
-    return sendSuccessResponse(res, 200, stats, 'User statistics retrieved successfully');
+    return sendResponse(res, 200, stats, 'User statistics retrieved successfully');
   } catch (error) {
     console.error('Get stats error:', error);
     return sendErrorResponse(res, 500, 'Failed to retrieve statistics');
