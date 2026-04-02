@@ -21,19 +21,19 @@ router.use(authenticate);
 /**
  * Test Case routes
  */
-// Create test case - All authenticated users
-router.post('/', createTestCase);
+// Create test case - Admin, QA only
+router.post('/', authorize(['Admin', 'QA']), createTestCase);
 
-// List test cases
+// List test cases - All authenticated users
 router.get('/', listTestCases);
 
-// Get test case details
+// Get test case details - All authenticated users
 router.get('/:testCaseId', getTestCase);
 
-// Update test case - All authenticated users
-router.put('/:testCaseId', updateTestCase);
+// Update test case - Admin, QA only
+router.put('/:testCaseId', authorize(['Admin', 'QA']), updateTestCase);
 
-// Delete test case - All authenticated users
-router.delete('/:testCaseId', deleteTestCase);
+// Delete test case - Admin, QA only
+router.delete('/:testCaseId', authorize(['Admin', 'QA']), deleteTestCase);
 
 export default router;

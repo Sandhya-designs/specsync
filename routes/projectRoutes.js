@@ -21,19 +21,19 @@ router.use(authenticate);
 /**
  * Project routes
  */
-// Create project - All authenticated users
-router.post('/', createProject);
+// Create project - Admin, BusinessAnalyst only
+router.post('/', authorize(['Admin', 'BusinessAnalyst']), createProject);
 
-// List projects
+// List projects - All authenticated users
 router.get('/', listProjects);
 
-// Get project details
+// Get project details - All authenticated users
 router.get('/:projectId', getProjectDetails);
 
-// Update project - All authenticated users
-router.put('/:projectId', updateProject);
+// Update project - Admin, BusinessAnalyst only
+router.put('/:projectId', authorize(['Admin', 'BusinessAnalyst']), updateProject);
 
-// Delete project - All authenticated users
-router.delete('/:projectId', deleteProject);
+// Delete project - Admin only
+router.delete('/:projectId', authorize('Admin'), deleteProject);
 
 export default router;

@@ -21,19 +21,19 @@ router.use(authenticate);
 /**
  * Requirement routes
  */
-// Create requirement - All authenticated users
-router.post('/', createRequirement);
+// Create requirement - Admin, BusinessAnalyst only
+router.post('/', authorize(['Admin', 'BusinessAnalyst']), createRequirement);
 
-// List requirements
+// List requirements - All authenticated users
 router.get('/', listRequirements);
 
-// Get requirement details
+// Get requirement details - All authenticated users
 router.get('/:requirementId', getRequirement);
 
-// Get requirement version history
+// Get requirement version history - All authenticated users
 router.get('/:requirementId/versions', getRequirementVersionHistory);
 
-// Update requirement (creates new version) - All authenticated users
-router.put('/:requirementId', updateRequirement);
+// Update requirement (creates new version) - Admin, BusinessAnalyst only
+router.put('/:requirementId', authorize(['Admin', 'BusinessAnalyst']), updateRequirement);
 
 export default router;

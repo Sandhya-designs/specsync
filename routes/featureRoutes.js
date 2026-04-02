@@ -21,19 +21,19 @@ router.use(authenticate);
 /**
  * Feature routes
  */
-// Create feature - All authenticated users
-router.post('/', createFeature);
+// Create feature - Admin, BusinessAnalyst only
+router.post('/', authorize(['Admin', 'BusinessAnalyst']), createFeature);
 
-// List features
+// List features - All authenticated users
 router.get('/', listFeatures);
 
-// Get feature details
+// Get feature details - All authenticated users
 router.get('/:featureId', getFeature);
 
-// Update feature - All authenticated users
-router.put('/:featureId', updateFeature);
+// Update feature - Admin, BusinessAnalyst, Developer
+router.put('/:featureId', authorize(['Admin', 'BusinessAnalyst', 'Developer']), updateFeature);
 
-// Delete feature - All authenticated users
-router.delete('/:featureId', deleteFeature);
+// Delete feature - Admin, BusinessAnalyst only
+router.delete('/:featureId', authorize(['Admin', 'BusinessAnalyst']), deleteFeature);
 
 export default router;
