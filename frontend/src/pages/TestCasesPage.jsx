@@ -79,12 +79,17 @@ export const TestCasesPage = () => {
   const fetchTestCases = async () => {
     try {
       setLoading(true);
+      setError('');
+      if (!formData.projectId) {
+        setTestCases([]);
+        return;
+      }
       const result = await testCaseService.getAllTestCases(formData.projectId);
-      console.log('Test cases loaded:', result.data?.testCases?.length);
       setTestCases(result.data?.testCases || []);
     } catch (err) {
-      console.error('Error fetching test cases:', err);
-      setError(err.message || 'Failed to load test cases');
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load test cases');
+      }
     } finally {
       setLoading(false);
     }
@@ -92,26 +97,27 @@ export const TestCasesPage = () => {
 
   const fetchFeatures = async () => {
     try {
-      console.log('Fetching features for project:', formData.projectId);
+      setError('');
+      if (!formData.projectId) return;
       const result = await featureService.getAllFeatures(formData.projectId, 1, 100);
-      console.log('Features API Response:', result);
-      console.log('Features array:', result.data?.features);
       setFeatures(result.data?.features || []);
     } catch (err) {
-      console.error('Failed to load features:', err);
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load features');
+      }
     }
   };
 
   const fetchRequirements = async () => {
     try {
-      console.log('Fetching requirements for project:', formData.projectId);
+      setError('');
+      if (!formData.projectId) return;
       const result = await requirementService.getAllRequirements(formData.projectId, 1, 100);
-      console.log('Requirements API Response:', result);
-      console.log('Requirements array:', result.data?.requirements);
       setRequirements(result.data?.requirements || []);
     } catch (err) {
-      console.error('Failed to load requirements:', err);
-      setError(err.message || 'Failed to load requirements');
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load requirements');
+      }
     }
   };
 

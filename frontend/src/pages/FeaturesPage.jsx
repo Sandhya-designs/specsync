@@ -56,10 +56,17 @@ export const FeaturesPage = () => {
   const fetchFeatures = async () => {
     try {
       setLoading(true);
+      setError('');
+      if (!formData.projectId) {
+        setFeatures([]);
+        return;
+      }
       const result = await featureService.getAllFeatures(formData.projectId);
       setFeatures(result.data?.features || []);
     } catch (err) {
-      setError(err.message || 'Failed to load features');
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load features');
+      }
     } finally {
       setLoading(false);
     }
@@ -67,10 +74,14 @@ export const FeaturesPage = () => {
 
   const fetchRequirements = async () => {
     try {
+      setError('');
+      if (!formData.projectId) return;
       const result = await requirementService.getAllRequirements(formData.projectId, 1, 100);
       setRequirements(result.data?.requirements || []);
     } catch (err) {
-      console.error('Failed to load requirements:', err);
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load requirements');
+      }
     }
   };
 

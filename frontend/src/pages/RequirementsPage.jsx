@@ -56,10 +56,18 @@ export const RequirementsPage = () => {
   const fetchRequirements = async () => {
     try {
       setLoading(true);
+      setError('');
+      if (!formData.projectId) {
+        setRequirements([]);
+        return;
+      }
       const result = await requirementService.getAllRequirements(formData.projectId);
       setRequirements(result.data?.requirements || []);
     } catch (err) {
-      setError(err.message || 'Failed to load requirements');
+      // Only show error if it's not the projectId error
+      if (err.message && !err.message.includes('projectId')) {
+        setError(err.message || 'Failed to load requirements');
+      }
     } finally {
       setLoading(false);
     }
