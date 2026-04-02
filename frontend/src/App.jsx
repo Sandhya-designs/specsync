@@ -74,7 +74,7 @@ function App() {
             <Route
               path="/testcases"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRoles={['Admin', 'QA']}>
                   <TestCasesPage />
                 </ProtectedRoute>
               }
@@ -82,7 +82,7 @@ function App() {
             <Route
               path="/drift"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRoles={['Admin', 'BusinessAnalyst', 'Developer', 'QA']}>
                   <DriftReportPage />
                 </ProtectedRoute>
               }
@@ -90,7 +90,7 @@ function App() {
             <Route
               path="/analytics"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requiredRoles={['Admin', 'BusinessAnalyst']}>
                   <AnalyticsPage />
                 </ProtectedRoute>
               }
