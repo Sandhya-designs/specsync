@@ -83,10 +83,50 @@ export const LoginPage = () => {
           </Link>
         </p>
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <p className="text-xs text-gray-600 mb-2 font-semibold">Demo Credentials:</p>
-          <p className="text-xs text-gray-600">Email: admin@specsync.com</p>
-          <p className="text-xs text-gray-600">Password: Demo123!</p>
+        <div className="mt-8 p-4 bg-gray-50 rounded-lg max-h-64 overflow-y-auto">
+          <p className="text-xs text-gray-600 mb-3 font-semibold">📋 Demo Credentials by Role:</p>
+          
+          <div className="space-y-2">
+            {/* Admin */}
+            <div className="border-l-4 border-blue-600 pl-3 py-2">
+              <p className="text-xs font-bold text-gray-900">👑 Admin</p>
+              <p className="text-xs text-gray-600">Email: <span className="text-blue-600">admin@specsync.com</span></p>
+              <p className="text-xs text-gray-600">Password: <span className="text-blue-600">Demo123!</span></p>
+              <p className="text-xs text-gray-500">Access: Full system access</p>
+            </div>
+
+            {/* BusinessAnalyst */}
+            <div className="border-l-4 border-green-600 pl-3 py-2">
+              <p className="text-xs font-bold text-gray-900">📊 BusinessAnalyst</p>
+              <p className="text-xs text-gray-600">Email: <span className="text-green-600">analyst@specsync.com</span></p>
+              <p className="text-xs text-gray-600">Password: <span className="text-green-600">Demo123!</span></p>
+              <p className="text-xs text-gray-500">Access: Manage requirements & features</p>
+            </div>
+
+            {/* Developer */}
+            <div className="border-l-4 border-purple-600 pl-3 py-2">
+              <p className="text-xs font-bold text-gray-900">💻 Developer</p>
+              <p className="text-xs text-gray-600">Email: <span className="text-purple-600">developer@specsync.com</span></p>
+              <p className="text-xs text-gray-600">Password: <span className="text-purple-600">Demo123!</span></p>
+              <p className="text-xs text-gray-500">Access: View & update features</p>
+            </div>
+
+            {/* QA */}
+            <div className="border-l-4 border-orange-600 pl-3 py-2">
+              <p className="text-xs font-bold text-gray-900">🧪 QA</p>
+              <p className="text-xs text-gray-600">Email: <span className="text-orange-600">qa@specsync.com</span></p>
+              <p className="text-xs text-gray-600">Password: <span className="text-orange-600">Demo123!</span></p>
+              <p className="text-xs text-gray-500">Access: Create & manage test cases</p>
+            </div>
+
+            {/* Viewer */}
+            <div className="border-l-4 border-gray-400 pl-3 py-2">
+              <p className="text-xs font-bold text-gray-900">👁️ Viewer</p>
+              <p className="text-xs text-gray-600">Email: <span className="text-gray-600">viewer@specsync.com</span></p>
+              <p className="text-xs text-gray-600">Password: <span className="text-gray-600">Demo123!</span></p>
+              <p className="text-xs text-gray-500">Access: Read-only access</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
