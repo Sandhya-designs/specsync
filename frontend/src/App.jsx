@@ -12,6 +12,7 @@ import { FeaturesPage } from './pages/FeaturesPage';
 import { TestCasesPage } from './pages/TestCasesPage';
 import { DriftReportPage } from './pages/DriftReportPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { UserManagementPage } from './pages/UserManagementPage';
 
 function App() {
   return (
@@ -91,6 +92,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AnalyticsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute requiredRoles={['Admin']}>
+                  <UserManagementPage />
                 </ProtectedRoute>
               }
             />

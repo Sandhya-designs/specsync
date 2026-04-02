@@ -13,6 +13,7 @@ import requirementRoutes from './routes/requirementRoutes.js';
 import featureRoutes from './routes/featureRoutes.js';
 import testCaseRoutes from './routes/testCaseRoutes.js';
 import driftRoutes from './routes/driftRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 // Import middleware
 import { errorHandler, notFoundHandler } from './middleware/errorMiddleware.js';
@@ -72,6 +73,7 @@ app.use('/api/features', featureRoutes);
 app.use('/api/testcases', testCaseRoutes);
 app.use('/api/drift', driftRoutes);
 app.use('/api/analytics', driftRoutes); // Analytics uses same routes
+app.use('/api/users', userRoutes);
 
 /**
  * 404 Handler

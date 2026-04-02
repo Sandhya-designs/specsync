@@ -13,6 +13,24 @@ export const Header = () => {
     navigate('/login');
   };
 
+  // Define navigation items based on role
+  const getNavigationItems = () => {
+    const allItems = [
+      { label: 'Dashboard', path: '/dashboard', requiredRoles: ['Admin', 'BusinessAnalyst', 'Developer', 'QA', 'Viewer'] },
+      { label: 'Projects', path: '/projects', requiredRoles: ['Admin', 'BusinessAnalyst', 'Developer', 'QA', 'Viewer'] },
+      { label: 'Requirements', path: '/requirements', requiredRoles: ['Admin', 'BusinessAnalyst', 'Developer', 'QA', 'Viewer'] },
+      { label: 'Features', path: '/features', requiredRoles: ['Admin', 'BusinessAnalyst', 'Developer', 'QA', 'Viewer'] },
+      { label: 'Test Cases', path: '/testcases', requiredRoles: ['Admin', 'QA'] },
+      { label: 'Drift Report', path: '/drift', requiredRoles: ['Admin', 'BusinessAnalyst', 'Developer', 'QA'] },
+      { label: 'Analytics', path: '/analytics', requiredRoles: ['Admin', 'BusinessAnalyst'] },
+      { label: 'Users', path: '/users', requiredRoles: ['Admin'] },
+    ];
+
+    return allItems.filter(item => item.requiredRoles.includes(user?.role));
+  };
+
+  const navigationItems = getNavigationItems();
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -26,49 +44,16 @@ export const Header = () => {
 
           <div className="hidden md:flex items-center gap-6">
             <nav className="flex items-center gap-6">
-              <Link
-                to="/dashboard"
-                className="text-gray-600 hover:text-primary transition-colors flex items-center gap-1"
-              >
-                <Home size={18} />
-                Dashboard
-              </Link>
-              <Link
-                to="/projects"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Projects
-              </Link>
-              <Link
-                to="/requirements"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Requirements
-              </Link>
-              <Link
-                to="/features"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Features
-              </Link>
-              <Link
-                to="/testcases"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Test Cases
-              </Link>
-              <Link
-                to="/drift"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Drift Report
-              </Link>
-              <Link
-                to="/analytics"
-                className="text-gray-600 hover:text-primary transition-colors"
-              >
-                Analytics
-              </Link>
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="text-gray-600 hover:text-primary transition-colors flex items-center gap-1"
+                >
+                  {item.path === '/dashboard' && <Home size={18} />}
+                  {item.label}
+                </Link>
+              ))}
             </nav>
 
             <div className="flex items-center gap-4 pl-6 border-l border-gray-200">
@@ -100,36 +85,16 @@ export const Header = () => {
         {showMenu && (
           <div className="md:hidden mt-4 pb-4 border-t border-gray-200">
             <nav className="flex flex-col gap-3">
-              <Link
-                to="/dashboard"
-                className="text-gray-600 hover:text-primary transition-colors py-2"
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/projects"
-                className="text-gray-600 hover:text-primary transition-colors py-2"
-              >
-                Projects
-              </Link>
-              <Link
-                to="/requirements"
-                className="text-gray-600 hover:text-primary transition-colors py-2"
-              >
-                Requirements
-              </Link>
-              <Link
-                to="/drift"
-                className="text-gray-600 hover:text-primary transition-colors py-2"
-              >
-                Drift Report
-              </Link>
-              <Link
-                to="/analytics"
-                className="text-gray-600 hover:text-primary transition-colors py-2"
-              >
-                Analytics
-              </Link>
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className="text-gray-600 hover:text-primary transition-colors py-2"
+                  onClick={() => setShowMenu(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
               <button
                 onClick={handleLogout}
                 className="btn btn-danger text-left w-full"
