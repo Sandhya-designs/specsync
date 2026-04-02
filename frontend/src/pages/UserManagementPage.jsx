@@ -277,17 +277,14 @@ export const UserManagementPage = () => {
               <div className="flex gap-2 mt-4">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  onClick={handleSubmit}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  {isSubmitting ? 'Saving...' : (editingUser ? 'Update User' : 'Create User')}
+                  {editingUser ? 'Update User' : 'Create User'}
                 </button>
                 <button
                   type="button"
-                  disabled={isSubmitting}
                   onClick={resetForm}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed"
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                 >
                   Cancel
                 </button>
