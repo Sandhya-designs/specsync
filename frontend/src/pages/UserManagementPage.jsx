@@ -116,8 +116,18 @@ export const UserManagementPage = () => {
           </div>
 
           {/* Alerts */}
-          {error && <AlertError message={error} />}
-          {success && <AlertSuccess message={success} />}
+          {error && (
+            <AlertError 
+              message={error} 
+              onDismiss={() => setError('')}
+            />
+          )}
+          {success && (
+            <AlertSuccess 
+              message={success} 
+              onDismiss={() => setSuccess('')}
+            />
+          )}
 
           {/* Add User Button */}
           <div className="mb-6">

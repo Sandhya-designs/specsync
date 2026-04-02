@@ -71,3 +71,7 @@ export const WarningMessage = ({ message, onDismiss }) => (
     </div>
   </div>
 );
+
+// Alias exports for compatibility
+export const AlertError = ErrorMessage;
+export const AlertSuccess = SuccessMessage;

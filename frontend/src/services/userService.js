@@ -3,7 +3,7 @@
  * API calls for user management
  */
 
-import { api } from './api';
+import api from './api';
 
 export const userService = {
   /**
