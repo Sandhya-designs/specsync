@@ -15,6 +15,7 @@ export const UserManagementPage = () => {
   const [success, setSuccess] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -66,6 +67,8 @@ export const UserManagementPage = () => {
         return;
       }
       
+      setIsSubmitting(true);
+      
       if (editingUser) {
         // Update user
         await userService.updateUser(editingUser._id, formData);
@@ -75,15 +78,34 @@ export const UserManagementPage = () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(formData.email)) {
           setError('Please enter a valid email address');
+          setIsSubmitting(false);
           return;
         }
         await userService.createUser({ ...formData, password: 'DefaultPass123!' });
         setSuccess('User created successfully');
       }
-      resetForm();
-      fetchUsers();
+      
+      // Clear form data immediately
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        role: 'Viewer',
+        isActive: true,
+      });
+      
+      // Close form immediately
+      setShowForm(false);
+      setEditingUser(null);
+      setIsSubmitting(false);
+      
+      // Refresh user list
+      await fetchUsers();
+      
+      // Clear success message after 3 seconds
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
+      setIsSubmitting(false);
       setError(err.message || 'Failed to save user');
     }
   };
@@ -255,14 +277,17 @@ export const UserManagementPage = () => {
               <div className="flex gap-2 mt-4">
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  disabled={isSubmitting}
+                  onClick={handleSubmit}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  {editingUser ? 'Update User' : 'Create User'}
+                  {isSubmitting ? 'Saving...' : (editingUser ? 'Update User' : 'Create User')}
                 </button>
                 <button
                   type="button"
+                  disabled={isSubmitting}
                   onClick={resetForm}
-                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                  className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
