@@ -47,12 +47,36 @@ export const UserManagementPage = () => {
     e.preventDefault();
     try {
       setError('');
+      
+      // Validate required fields
+      if (!formData.firstName.trim()) {
+        setError('First name is required');
+        return;
+      }
+      if (!formData.lastName.trim()) {
+        setError('Last name is required');
+        return;
+      }
+      if (!formData.email.trim()) {
+        setError('Email is required');
+        return;
+      }
+      if (!formData.role) {
+        setError('Role is required');
+        return;
+      }
+      
       if (editingUser) {
         // Update user
         await userService.updateUser(editingUser._id, formData);
         setSuccess('User updated successfully');
       } else {
-        // Create new user
+        // Create new user - validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+          setError('Please enter a valid email address');
+          return;
+        }
         await userService.createUser({ ...formData, password: 'DefaultPass123!' });
         setSuccess('User created successfully');
       }
@@ -230,12 +254,13 @@ export const UserManagementPage = () => {
               </form>
               <div className="flex gap-2 mt-4">
                 <button
-                  onClick={handleSubmit}
+                  type="submit"
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   {editingUser ? 'Update User' : 'Create User'}
                 </button>
                 <button
+                  type="button"
                   onClick={resetForm}
                   className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
                 >
