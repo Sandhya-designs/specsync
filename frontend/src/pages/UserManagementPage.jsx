@@ -35,9 +35,9 @@ export const UserManagementPage = () => {
       setLoading(true);
       setError('');
       const response = await userService.getAllUsers();
-      setUsers(response.data.data.users || []);
+      setUsers(response.data.users || []);
     } catch (err) {
-      setError('Failed to fetch users: ' + (err.response?.data?.message || err.message));
+      setError('Failed to fetch users: ' + (err.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
@@ -60,7 +60,7 @@ export const UserManagementPage = () => {
       fetchUsers();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save user');
+      setError(err.message || 'Failed to save user');
     }
   };
 
@@ -73,7 +73,7 @@ export const UserManagementPage = () => {
         fetchUsers();
         setTimeout(() => setSuccess(''), 3000);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to delete user');
+        setError(err.message || 'Failed to delete user');
       }
     }
   };
